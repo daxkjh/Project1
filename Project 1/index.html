@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iron Man Adventures</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .front {
+          transition:
+            transform
+            600ms
+            cubic-bezier(.3, .7, .4, 1);
+        }
+      
+        .pushable:hover .front {
+          transform: translateY(-6px);
+          transition:
+            transform
+            250ms
+            cubic-bezier(.3, .7, .4, 1.5);
+        }
+      
+        .pushable:active .front {
+          transform: translateY(-2px);
+          transition: transform 34ms;
+        }
+      </style>
+</head>
+  <body>
+    <div id="gameContainer">
+      <img
+        id="gameBackground"
+        src="pictures/Background/ironman-background.png"
+      />
+      <div id="Start">
+        <button id="startbutton" class="pushable">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front">
+              START
+            </span>
+          </button>
+      </div>
+    </div>
+    <audio src="pictures/avengers_.mp3" id="StartTheme"></audio>
+    <script src="javascript.js"></script>
+  </body>
+</html>
