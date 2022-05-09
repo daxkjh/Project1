@@ -5,28 +5,40 @@ body {
   background-color: #33475b;
 }
 
+div {
+  border-style: dashed;
+  border-width: 1px;
+  border-color: aliceblue;
+}
+
 #gameContainer {
   margin-left: auto;
   margin-right: auto;
-  width: 960px;
-  height: 800px;
+  width: 1280px;
+  height: 720px;
   display: flex; 
   justify-content: center;
   background-image: url("/pictures/Background/Avengers-background.jpg");
-  
+  background-size: contain;
 }
 
-#gameBackground {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100%;
-  height: auto;
-}
+
 
 #Start{
-    position: absolute;
-    margin-top: 35%;
+    position: relative;
+    width: 920px;
+    height: 660px;
+    margin-top: 30px;
+    background-image: url("/pictures/Background/ironman-background.png");
+    background-size: contain;
+    background-position: center;
    
+}
+
+#startbutton{
+  position: absolute;
+  left: 330px;
+  top: 330px;
 }
 
 .pushable {
@@ -117,4 +129,45 @@ body {
     outline: none;
   }
 
+ .battle {
+   position: relative;
+   background-image: url("/pictures/Background/Battleground.jpg");
+   background-size: cover;
+   width: 920px;
+    height: 660px;
+    margin-top: 30px;
+ }
+
+ .ironmanClass{
+   position: absolute;
+   background-image: url("/pictures/Characters/ironman/Iron\ Man.png");
+   /* background-color: aquamarine; */
+   height: 120px;
+   width: 60px;
+   background-size: contain;
+   top: 330px;
+   left: 150px;
+   z-index: 10;
+ }
+
+ .handClass {
+  position: absolute;
+  background-image: url("/pictures/Characters/TheHand/Infiltrator/Image10.png");
+  /* background-color: aquamarine; */
+  height: 120px;
+   width: 60px;
+   background-size: contain;
+  top: 330px;
+  left: 780px;
+}
+
+.footer{
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  width: 920px;
+  background-color: #000;
+  
+}
  
+
