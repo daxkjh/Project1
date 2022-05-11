@@ -2,6 +2,7 @@
 // resources
 const $footer = $("<div>").addClass("footer");
 const $battlemap = $(".battle");
+$footer.appendTo($battlemap)
 let charArray = [];
 let heroList = [];
 let spdArr = [];
@@ -28,9 +29,10 @@ const hero = {
       hpgrowth: 15,
       pic: $("<img>").attr("id", "ironmanId").addClass("ironmanClass"),
       sequence: () => {
+        $footer.show()
         $beamButton.appendTo($footer);
         $missileButton.appendTo($footer);
-        $footer.appendTo($battlemap);
+        ;
       },
     },
     thor: {
@@ -125,7 +127,7 @@ const charSet = {
 ///#### Villain skills
 // ######################################
 const slash = (targetHero)=> {
-    console.log(targetHero)
+    //console.log(targetHero)
     targetHero.hp-=5
     if(targetHero.hp<1){
         targetHero.alive=false
@@ -148,6 +150,7 @@ const slash = (targetHero)=> {
   const battle = (event) => {
     //   console.log("atkselector", atkselector)
     if(turn == true){
+    
     let execute = attack[atkselector];
     execute(event);
     if(index<spdArr.length-1){
@@ -162,6 +165,7 @@ const slash = (targetHero)=> {
   const attack = {
     beam: (event) => {
       let v = $(event.target).attr("name");
+      
        let enemy = spdArr.find(element => element.name==v)
         enemy.hp -= hero.ironman.atk;
         if(enemy.hp<1){
@@ -317,29 +321,29 @@ console.log(spdArr)
 
 
 
-const stageSetUp = (arr) => {
-  for (const x in arr) {
+// const stageSetUp = (arr) => {
+//   for (const x in arr) {
       
-    if (arr[x].type === "villain") {
-      villteam += arr[x].hp; console.log(villteam)
-    } else {
-      heroteam += arr[x].hp; console.log(heroteam)
-    }
-  }
-  for (const y in arr){
-      console.log('y >', y)
-    if (arr[y].alive === true) {
-        console.log('have alive')
-        spdArr.push({ [arr[y].name]: arr[y].spd });
-    spdArr.sort((a, b) => Object.values(b) - Object.values(a))
-     console.log('spdArr ->' ,spdArr)
-  }
-  }
+//     if (arr[x].type === "villain") {
+//       villteam += arr[x].hp; console.log(villteam)
+//     } else {
+//       heroteam += arr[x].hp; console.log(heroteam)
+//     }
+//   }
+//   for (const y in arr){
+//       console.log('y >', y)
+//     if (arr[y].alive === true) {
+//         console.log('have alive')
+//         spdArr.push({ [arr[y].name]: arr[y].spd });
+//     spdArr.sort((a, b) => Object.values(b) - Object.values(a))
+//      console.log('spdArr ->' ,spdArr)
+//   }
+//   }
 //   if (villteam < 1) {
 //     alert("win");
 //   }
 //   if (heroteam < 1) {alert("lose")};
-};
+//};
 
 // const reviewRound = (arr) => {
 //     for (const y in arr){
@@ -364,12 +368,15 @@ const battleStart = () => {
 else if (spdArr[index].alive==true) {
             if (spdArr[index].type=='hero') {
                 let x = spdArr[index].name;
+                $('.atkButton').remove()
+                atkselector=''
                 hero[x].sequence()//load footer, load button
+                
                 skillButtons()//open selection
                 turn = true
             } else {
-                
-                $footer.remove()
+                $footer.hide()
+               // $footer.slideDown()
               
                 let aliveHero = []
                 spdArr.forEach((element,index2)=>{
@@ -379,13 +386,13 @@ else if (spdArr[index].alive==true) {
                 })
                 let num = Math.floor(Math.random()*aliveHero.length)
                 let targetHero = spdArr[aliveHero[num]]
-                slash(targetHero)
+                setTimeout(()=>{slash(targetHero)},2000)
                 if(index<spdArr.length-1){
                 index++
                 } else{
                     index = 0
                 }
-                setTimeout(()=>{battleStart()},2000)
+                setTimeout(()=>{battleStart()},3000)
               
             }
 }
