@@ -1,176 +1,243 @@
+const { workerData } = require("worker_threads");
+
 // resources
-const $footer = $('<div>').addClass('footer');
+const $footer = $("<div>").addClass("footer");
 const $battlemap = $(".battle");
+let charArray = [];
+let heroList = [];
+
+let atkselector = "";
+
+//## Skill Buttons
+const $beamButton = $("<button>")
+  .addClass("beamButtonClass")
+  .attr("id", "beamButtonId")
+  .attr("name", "beam");
+const $missileButton = $("<button>")
+  .addClass("missileButtonClass")
+  .attr("id", "missileButtonId")
+  .attr("name", "missile");
 
 //### skills ####
-const beam = (event) => {
-    let v = $(event.target).attr('name')
-    villain[v].hp -= hero.ironman.atk
-    $battlemap.append($('<div>')).addClass('beam') //graphics
-    console.log(villain[v])
-;}
+const battle = (event) => {
+  let execute = attack[atkselector];
+  execute(event);
+};
 
-const missile = () => {
-   for (const x in villain){
-    villain[x].hp -= 1
-   }
-   console.log(villain)
-;}
+const attack = {
+  beam: (event) => {
+    let v = $(event.target).attr("name");
+    characters[v].hp -= characters.ironman.atk; //need extra work
+    console.log(characters[v]);
+  },
 
-const punch =(event)=>{
-    let v = $(event.target).attr('name')
-    villain[v].hp -= hero.ironman.atk
-    $battlemap.append($('<div>')).addClass('punch') // graphics
-    console.log(villain[v])
+  missile: () => {
+    for (const x in charArray) {
+      x.hp -= 1;
+      console.log(characters[x]);
+    }
+    console.log(characters[x]);
+  },
+
+  hammer: (event) => {
+    let v = $(event.target).attr("name");
+    characters[v].hp -= characters.thor.atk;
+  },
+
+  lightning: (event) => {
+    let v = $(event.target).attr("name");
+    characters[v].hp -= characters.thor.atk;
+  },
+
+  smash: (event) => {
+    let v = $(event.target).attr("name");
+    characters[v].hp -= characters.hulk.atk;
+  },
+
+  toss: (event) => {
+    let v = $(event.target).attr("name");
+    characters[v].hp -= characters.hulk.atk;
+  },
+};
+
+//### End Of Skills ####
+
+//Creating game characters
+const characters = {
+  ironman: {
+    type: "hero",
+    name: "ironman",
+    level: 1,
+    speed: 11,
+    hp: 100,
+    atk: 20,
+    atkgrowth: 12,
+    hpgrowth: 15,
+    pic: $("<img>").attr("id", "ironmanId").addClass("ironmanClass"),
+  },
+  thor: {
+    type: "hero",
+    name: "thor",
+    level: 1,
+    speed: 9,
+    hp: 140,
+    atk: 15,
+    atkgrowth: 8,
+    hpgrowth: 25,
+  },
+  hulk: {
+    type: "hero",
+    name: "hulk",
+    level: 1,
+    speed: 10,
+    hp: 200,
+    atk: 15,
+    atkgrowth: 6,
+    hpgrowth: 35,
+  },
+  hand: {
+    type: "villain",
+    name: "hand",
+    level: 1,
+    speed: 9,
+    hp: 150,
+    atk: 15,
+    atkgrowth: 1,
+    hpgrowth: 1,
+    exp: 30,
+    pic: $("<img>")
+      .addClass("handClass")
+      .attr("id", "handId")
+      .attr("name", "hand"),
+  },
+  goon: {
+    type: "villain",
+    name: "goon",
+    level: 2,
+    speed: 8,
+    hp: 110,
+    atk: 25,
+    atkgrowth: 1,
+    hpgrowth: 1,
+    exp: 50,
+  },
+  thanos: {
+    type: "villain",
+    name: "thanos",
+    level: 5,
+    speed: 5,
+    hp: 1200,
+    atk: 50,
+    atkgrowth: 1,
+    hpgrowth: 1,
+    exp: 200,
+  },
+};
+for (const char in characters) {
+  characters[char]["atk"] +=
+    characters[char]["atkgrowth"] * characters[char]["level"];
+  characters[char].hp += characters[char].hpgrowth * characters[char].level;
 }
 
+//## characters resource ##
 
+const $ironMan = characters.ironman.pic;
 
-
-
-const hero = {
-    ironman: {name: 'ironman', level:1, speed:10, hp: 100, atk: 20, atkgrowth: 12, hpgrowth: 15, skill1: beam, skill2: missile, pic:$('<div>').attr('id','ironmanId').addClass('ironmanClass') },
-    captain: {hp: 140, atk: 15, atkgrowth: 8, hpgrowth: 25, atk1: punch, atk2: shield},
-//     hulk: {hp: 200, atk: 15, atkgrowth: 6, hpgrowth: 35, atk1: smash(), atk2: toss()}
-}
-for (const char in hero){
-    hero[char]['atk'] += hero[char]['atkgrowth'] * hero[char]['level'];
-    hero[char].hp += hero[char].hpgrowth * hero[char].level;
-}
-
-
-
-//## hero resource ##
-//const $ironMan = $('<div>').attr('id','ironmanId').addClass('ironmanClass');
-const $ironMan = hero.ironman.pic
-
-
-
-
-const villain = {
-    hand: {name: 'hand', level: 1,speed:9, hp: 150, atk: 15, exp: 30},
-    goon: {name: 'goon', level : 2, speed:8, hp: 110, atk: 25, exp: 50},
-    thanos: {name: 'thanos',level: 5, speed: 5, hp: 1200, atk: 50, exp: 200}
-}
-//villain resource
-const $hand = $('<div>').addClass('handClass').attr('id','handId').attr('name','hand');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//characters resource
+// const $hand = $("<img>")
+//   .addClass("handClass")
+//   .attr("id", "handId")
+//   .attr("name", "hand");
 
 //######### GAME START ###################
-const gameStart = () =>{
-    $('#Start').hide('slow');
-    
-   // playSound();
-    // play background story();
-    setTimeout(battleStage1,500);
+const gameStart = () => {
+  $("#Start").hide("slow");
 
-   // $('#startbutton').on('click',gameStart);
-   
-}
+  // playSound();
+  // play background story();
+  setTimeout(battleStage1, 500);
+};
 
+// ### Creating Stages ####
+const battleStage1 = () => {
+  charArray = [];
+  $(".battle").show("slow");
+  createTurnArray(["ironman", "hand"]);
+  drawChar();
+  //while loop
+  battleSequence();
 
+  for (const element of charArray) {
+    if (element.type && element.type == "villain") {
+      $(`.${element.name}Class`).on("click", battle);
+    } //select atk target
+  }
+};
 
-const charArrHero = []
-const loadChar = (char)=>{
-    charArrHero.push(hero.char)
-}
+const drawChar = () => {
+  for (const object of charArray) {
+    object["pic"].appendTo($battlemap);
+  }
+  //   $ironMan.appendTo($battlemap);
+  //   $hand.appendTo($battlemap);
+};
 
-const drawChar = ()=>{ 
-    $ironMan.appendTo($battlemap);
-    $hand.appendTo($battlemap);
-}
+const createTurnArray = (char) => {
+  for (const x of char) {
+    charArray.push(characters[x]);
+    if (characters[x].type == "hero") {
+      heroList.push(characters[x]);
+    }
+  }
+  const sortedChar = charArray.sort((a, b) => {
+    return b["speed"] - a["speed"];
+  });
+  console.log(charArray);
+  console.log(heroList);
+};
 
-const SumOf =() =>{
+const battleSequence = () => {
+  // while ()
+  ironmanAtkSequence();
+  // loop thru char, based on speed, append
+  //  if type == hero, append footer
+};
 
-}
+const ironmanAtkSequence = () => {
+  $beamButton.appendTo($footer);
+  $missileButton.appendTo($footer);
+  $footer.appendTo($battlemap);
+};
 
+const skillButtons = () => {
+  $beamButton.on("click", funcAtkSelector);
+  $missileButton.on("click", funcAtkSelector);
+};
 
-const battleSequence =()=>{
-    $footer.appendTo($battlemap);
-    loadChar()
-  //  while (sumOf(heroHP)>0||sumOf(villHP)>0){}
-    //determine which character turn to load
-    //clear previous button & create new skill button in footer
-    //listen for skill button click
-    //select target, apply skill
-}
+const funcAtkSelector = (event) => {
+  atkselector = $(event.target).attr("name");
+  console.log(atkselector);
+  return atkselector;
+};
 
+// loadCharTurn();
+//  while (sumOf(heroHP)>0||sumOf(villHP)>0){}
+//determine which character turn to load
+//clear previous button & create new skill button in footer
+//listen for skill button click
+//select target, apply skill
 
+const gameloop = () => {};
 
-const battleStage1 = () =>{
-    $('.battle').show('slow');
-    drawChar();
-    battleSequence();
+const playSound = () => {
+  document.getElementById("StartTheme").play();
+};
 
+const main = () => {
+  skillButtons();
+};
 
-$('.handClass').on('click',missile);
-$('.handClass').on('click',beam);
-}
-
-
-//const loadStage1()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const gameloop = ()=>{
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const playSound =()=> {
-document.getElementById('StartTheme').play()
-}
-
-$(()=>{
-    $('#startbutton').on('click',gameStart);
-    
-})
+$(() => {
+  main();
+  $("#startbutton").on("click", gameStart);
+});

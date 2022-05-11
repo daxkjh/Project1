@@ -3,6 +3,7 @@ body {
   padding: 50px;
   font-family: "Avenir", sans-serif;
   background-color: #33475b;
+  min-width: 920px;
 }
 
 div {
@@ -20,6 +21,17 @@ div {
   justify-content: center;
   background-image: url("/pictures/Background/Avengers-background.jpg");
   background-size: contain;
+}
+
+.gameGrid {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    ". . . . ."
+    ". . . . ."
+    ". . . . .";
 }
 
 
@@ -142,7 +154,7 @@ div {
  .stageSelectClass {
   display: none;
   position: relative;
-  background-image: url("/pictures/Background/Battleground.jpg");
+  content: url("/pictures/Background/Battleground.jpg");
   background-size: cover;
   width: 920px;
    height: 660px;
@@ -150,9 +162,8 @@ div {
 }
 
  .ironmanClass{
-   display: inline-block;
    position: absolute;
-   background-image: url("/pictures/Characters/ironman/IronMan-sprite.png");
+   content: url("/pictures/Characters/ironman/IronMan-sprite.png");
    /* background-color: aquamarine; */
    height: 162px;
    width: 120px;
@@ -164,7 +175,7 @@ div {
 
  .handClass {
   position: absolute;
-  background-image: url("/pictures/Characters/TheHand/actual/HandSoldier.png");
+  content: url("/pictures/Characters/TheHand/actual/HandSoldier.png");
   /* background-color: aquamarine; */
   height: 150px;
    width: 100px;
@@ -178,7 +189,7 @@ div {
   bottom: 0;
   height: 90px;
   width: 920px;
-  background-color: #000;
+  background-color: rgb(69, 69, 69);
   
 }
  
@@ -186,7 +197,23 @@ div {
   width: 20px;
   height: 5px;
   background-color: red;
-  display: inline-block;
   position: relative;
 }
 
+#beamButtonId{
+  background-image: url('/pictures/Characters/ironman/beambutton.png');
+  width: 50px;
+  height: 50px;
+}
+
+#missileButtonId{
+  background-image: url('/pictures/Characters/ironman/missilebutton.png');
+  width: 50px;
+  height: 50px;
+}
+
+.selected {
+  border-style: solid;
+  border-width: 5px;
+  border-color: red;
+}
