@@ -30,12 +30,14 @@ const hero = {
     level: 1,
     spd: 11,
     hp: 100,
+    hpmax:100,
     atk: 20, 
     atkgrowth: 12,
     hpgrowth: 15,
-    pic: $("<img>")
+    pic: $("<div>")
       .attr("id", "ironmanId")
       .addClass("ironmanClass")
+      .addClass("bounce-1")
       .addClass("allCharacters"),
     sequence: () => {
       $footer.show();
@@ -75,6 +77,7 @@ const hero = {
 for (const char in hero) {
   hero[char]["atk"] += hero[char]["atkgrowth"] * hero[char]["level"];
   hero[char].hp += hero[char].hpgrowth * hero[char].level;
+  hero[char].hpmax += hero[char].hpgrowth * hero[char].level;
 }
 
 //############################
@@ -87,11 +90,13 @@ const charSet1 = {
     name: "hand",
     type: "villain",
     hp: 100,
+    hpmax:100,
     atk: 15,
     spd: 5,
     alive: true,
-    image: $("<img>")
+    image: $("<div>")
       .addClass("handClass")
+      .addClass('bounce-2')
       .addClass("allCharacters")
       .attr("id", "handId")
       .attr("name", "hand"),
@@ -100,6 +105,7 @@ const charSet1 = {
     name: hero[hero1].name,
     type: hero[hero1].type,
     hp: hero[hero1].hp,
+    hpmax:hero[hero1].hp,
     atk: hero[hero1].atk,
     spd: hero[hero1].spd,
     alive: true,
@@ -115,6 +121,9 @@ const villain = {
     skill1: (targetHero) => {
       //console.log(targetHero)
       targetHero.hp -= 50;
+      $('.handslash').show();
+      setTimeout(()=>($('.handslash').hide()),1000)
+      $('.ironmanbar').css('width',`${(targetHero.hp/charSet1.ironman.hpmax*100)}%`)
       if (targetHero.hp < 1) {
         targetHero.alive = false;
       }
@@ -238,11 +247,13 @@ const loadStage1 = () => {
 const drawChar = (obj) => {
   for (const a in obj) {
     let $characterPic = obj[a].image;
-    
+     $characterPic.appendTo("#battlemap");
+        $('<div>').addClass('allCharacters').addClass(`${obj[a].name}HB`).appendTo($characterPic);
+        $('<div>').addClass('allCharacters').addClass(`${obj[a].name}bar`).appendTo(`.${obj[a].name}HB`);
+        
 
 
 
-    $characterPic.appendTo("#battlemap");
     console.log("drawChar working");
   }
 };
@@ -345,7 +356,7 @@ const battleStart = () => {
         }, 2000);
         if (targetHero.hp < 1) {
           targetHero.alive = false;
-        }
+        }  
       } else {
         setTimeout(() => {
           villain[villName].skill2(targetHero);

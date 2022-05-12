@@ -207,7 +207,7 @@ div {
 
  .ironmanClass{
    position: absolute;
-   content: url("/pictures/Characters/ironman/IronMan-sprite.png");
+   background-image: url("/pictures/Characters/ironman/IronMan-sprite.png");
    /* background-color: aquamarine; */
    height: 162px;
    width: 120px;
@@ -215,17 +215,28 @@ div {
    top: 330px;
    left: 100px;
    z-index: 10;
+    align-self: flex-end;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    margin: 0 auto 0 auto;
+    transform-origin: bottom;
+    
  }
 
  .handClass {
   position: absolute;
-  content: url("/pictures/Characters/TheHand/actual/HandSoldier.png");
+  background-image: url("/pictures/Characters/TheHand/actual/HandSoldier.png");
   /* background-color: aquamarine; */
   height: 150px;
    width: 100px;
    background-size: cover;
   top: 330px;
   left: 720px;
+  align-self: flex-end;
+    animation-duration: .75s;
+    animation-iteration-count: infinite;
+    margin: 0 auto 0 auto;
+    transform-origin: bottom;
 }
 
 .footer {
@@ -264,20 +275,44 @@ div {
   border-color: red;
 }
 
-.health-bar {
+.ironmanHB {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  width: 200px;
-  height: 20px;
-  padding: 5px;
+  width: 120px;
+  height: 18px;
+  padding: 2px;
   background: #ddd;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  position: relative;
+  position: absolute;
+  bottom: -10px;
 }
-.bar {
+.ironmanbar {
+  background: #c54;
+  width: 100%;
+  height: 10px;
+  position: relative;
+  
+  transition: width .5s linear;
+}
+
+.handHB {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100px;
+  height: 18px;
+  padding: 2px;
+  background: #ddd;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: -25px;
+}
+.handbar {
   background: #c54;
   width: 100%;
   height: 10px;
@@ -295,4 +330,39 @@ div {
   width: 0px;
   
   transition: width .5s linear;
+}
+
+
+.bounce-1 {
+  animation-name: bounce-1;
+  animation-timing-function: linear;
+}
+@keyframes bounce-1 {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+.bounce-2 {
+  animation-name: bounce-2;
+  animation-timing-function: linear;
+}
+@keyframes bounce-2 {
+  0%   { transform: translateX(0); }
+  15%   { transform: translateX(-4px) translateY(-3px); }
+  25%   { transform: translateX(-7px) translateY(-7px); }
+  50%  { transform: translateX(-15px) translateY(0px); }
+  75%   { transform: translateX(-7px) translateY(-7px); }
+  85%  { transform: translateX(-3px) translateY(-4px); }
+  100% { transform: translateX(0); }
+}
+.handslash{
+  display: none;
+  z-index: 15;
+  position: absolute;
+  height: 300px;
+  left: 350px;
+  top: 330px;
+  
+
 }
