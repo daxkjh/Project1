@@ -34,7 +34,9 @@ div {
     ". . . . .";
 }
 
-
+#gameSummaryId{
+  display: none;
+}
 
 #Start{
     position: relative;
@@ -42,7 +44,7 @@ div {
     height: 660px;
     margin-top: 30px;
     background-image: url("/pictures/Background/ironman-background.png");
-    background-size: contain;
+    background-size: cover;
     background-position: center;
    
 }
@@ -53,6 +55,48 @@ div {
   top: 330px;
 }
 
+.stagebutton{
+  width: 75px;
+  height: 75px;
+  border-radius: 37px;
+  background-color: aliceblue;
+}
+
+.stagebuttonspan{
+  font-size:30px;
+  font-weight: bold;
+}
+
+#stage1{
+  position: absolute;
+  left: 100px;
+  top: 400px;
+}
+#stage2{
+  position: absolute;
+  left: 250px;
+  top: 200px;
+}
+#stage3{
+  position: absolute;
+  left: 400px;
+  top: 300px;
+}
+#stage4{
+  position: absolute;
+  left: 550px;
+  top: 400px;
+}
+#stage5{
+  position: absolute;
+  left: 700px;
+  top: 300px;
+}
+.locked{
+  background: url("/pictures/Background/1200px-2017-fr.wp-red-lock.png");
+  background-size: cover;
+  color: transparent;
+}
 .pushable {
     position: relative;
     border: none;
@@ -154,7 +198,7 @@ div {
  .stageSelectClass {
   display: none;
   position: relative;
-  content: url("/pictures/Background/Battleground.jpg");
+  background-image: url("/pictures/Background/city.png");
   background-size: cover;
   width: 920px;
    height: 660px;
@@ -184,12 +228,14 @@ div {
   left: 720px;
 }
 
-.footer{
+.footer {
+  display: none;
   position: absolute;
-  bottom: 0;
+  top: 660px;
   height: 90px;
   width: 920px;
   background-color: rgb(69, 69, 69);
+  z-index: 10;
   
 }
  

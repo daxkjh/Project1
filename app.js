@@ -1,9 +1,12 @@
 
 // resources
 const $footer = $("<div>").addClass("footer");
-const $battlemap = $(".battle");
-$footer.appendTo($battlemap)
-let charArray = [];
+$footer.appendTo('#gameContainer')
+//const $battlemap = $(".battle");
+//const $battlemap = $('<div>').addClass('battle').attr('id','battlemap')
+//$footer.appendTo($battlemap)
+
+let win = 'hero'
 let heroList = [];
 let spdArr = [];
 let heroteam = 0;
@@ -11,6 +14,12 @@ let villteam = 0;
 let index = 0;
 let atkselector = "";
 let turn = null
+let currentStage = 0
+let stage1clear = false;
+let stage2clear = false;
+let stage3clear = false;
+let stage4clear = false;
+
 
 
 //#####################
@@ -27,13 +36,17 @@ const hero = {
       atk: 20,
       atkgrowth: 12,
       hpgrowth: 15,
-      pic: $("<img>").attr("id", "ironmanId").addClass("ironmanClass"),
+      pic: $("<img>").attr("id", "ironmanId").addClass("ironmanClass").addClass('allCharacters'),
       sequence: () => {
         $footer.show()
         $beamButton.appendTo($footer);
         $missileButton.appendTo($footer);
         ;
       },
+      sequenceOut: ()=> {$beamButton.detach();
+                        $missileButton.detach();},
+
+      reset: ()=>{$('.ironmanClass').remove()}
     },
     thor: {
       type: "hero",
@@ -54,44 +67,13 @@ const hero = {
       atk: 15,
       atkgrowth: 6,
       hpgrowth: 35,
-    }, //,
-    //   hand: {
-    //     type: "villain",
-    //     name: "hand",
-    //     level: 1,
-    //     speed: 9,
-    //     hp: 150,
-    //     atk: 15,
-    //     atkgrowth: 1,
-    //     hpgrowth: 1,
-    //     exp: 30,
-    //     pic: $("<img>")
-    //       .addClass("handClass")
-    //       .attr("id", "handId")
-    //       .attr("name", "hand"),
-    //   },
-    //   goon: {
-    //     type: "villain",
-    //     name: "goon",
-    //     level: 2,
-    //     speed: 8,
-    //     hp: 110,
-    //     atk: 25,
-    //     atkgrowth: 1,
-    //     hpgrowth: 1,
-    //     exp: 50,
-    //   },
-    //   thanos: {
-    //     type: "villain",
-    //     name: "thanos",
-    //     level: 5,
-    //     speed: 5,
-    //     hp: 1200,
-    //     atk: 50,
-    //     atkgrowth: 1,
-    //     hpgrowth: 1,
-    //     exp: 200,
-    //   },
+    }
+    
+}
+
+const villainHP = {
+    hand:{hp:100},
+    goon:{hp:150}
 }
 
 //############################
@@ -99,16 +81,17 @@ const hero = {
 //###########################
 let hero1 = "ironman"; // from function
 
-const charSet = {
+const charSet1 = {
     hand: {
       name: "hand",
       type: "villain",
-      hp: 100,
+      hp: villainHP.hand.hp,
       atk: 15,
       spd: 5,
       alive: true,
       image: $("<img>")
         .addClass("handClass")
+        .addClass('allCharacters')
         .attr("id", "handId")
         .attr("name", "hand")
     },
@@ -119,23 +102,35 @@ const charSet = {
       atk: hero[hero1].atk,
       spd: hero[hero1].spd,
       alive: true,
-      image: hero[hero1].pic
+      image: hero[hero1].pic,
+      
     }
 }
 
 ////////////////////////////////////////////
 ///#### Villain skills
 // ######################################
-const slash = (targetHero)=> {
+const villain ={
+hand : {
+    skill1: (targetHero)=> {
     //console.log(targetHero)
-    targetHero.hp-=5
+    targetHero.hp-=50
+    if(targetHero.hp<1){
+        targetHero.alive=false
+    }
+    console.log(targetHero)
+},
+
+skill2: (targetHero)=> {
+    //console.log(targetHero)
+    targetHero.hp-=20
     if(targetHero.hp<1){
         targetHero.alive=false
     }
     console.log(targetHero)
 }
-
-
+}
+}
 
 
 
@@ -153,7 +148,16 @@ const slash = (targetHero)=> {
     
     let execute = attack[atkselector];
     execute(event);
-    if(index<spdArr.length-1){
+    $('.atkButton').remove()
+    let allVill = spdArr.filter(element=>element.type == 'villain')
+    let allVillDead = allVill.every(element=>element.alive==false)
+    if (allVillDead == true){
+        win='hero'
+        alert ('win')
+        resolveWin()
+        resetMap()
+        $('.atkButton').remove();
+    }else if(index<spdArr.length-1){
      index++   
     } else {
         index = 0
@@ -169,57 +173,20 @@ const slash = (targetHero)=> {
        let enemy = spdArr.find(element => element.name==v)
         enemy.hp -= hero.ironman.atk;
         if(enemy.hp<1){
-            enemy.alive= false
+            enemy.alive = false
         } 
         console.log(spdArr)
     },
   
     missile: () => {
-      for (const x in charSet) {
-          if(charSet[x].type=='villain'){
-        charSet[x].hp -= 1;
-        console.log(charSet[x]);
+      for (const x in charSet1) {
+          if(charSet1[x].type=='villain'){
+        charSet1[x].hp -= 1;
+        console.log(charSet1[x]);
       }
     }},
-  
-    // hammer: (event) => {
-    //   let v = $(event.target).attr("name");
-    //   hero[v].hp -= hero.thor.atk;
-    // },
-  
-    // lightning: (event) => {
-    //   let v = $(event.target).attr("name");
-    //   hero[v].hp -= hero.thor.atk;
-    // },
-  
-    // smash: (event) => {
-    //   let v = $(event.target).attr("name");
-    //   hero[v].hp -= hero.hulk.atk;
-    // },
-  
-    // toss: (event) => {
-    //   let v = $(event.target).attr("name");
-    //   hero[v].hp -= hero.hulk.atk;
-    // },
-  
-    // slash: () => {
-    //     for(const hero in charSet){
-    //         if(charSet[hero].type =='hero'){
-    //             heroList.push(hero);
-    //             console.log(hero)
-    //         }
-    //     }
-    // },
-  };
-  
-  //### End Of Skills ####
-
-
-
-
-
-
-
+}
+   
 
 
 
@@ -262,32 +229,39 @@ for (const char in hero) {
   hero[char].hp += hero[char].hpgrowth * hero[char].level;
 }
 
-//## hero resource ##
 
-//hero resource
-// const $hand = $("<img>")
-//   .addClass("handClass")
-//   .attr("id", "handId")
-//   .attr("name", "hand");
 
 //######### GAME START ###################
 const gameStart = () => {
-  $("#Start").hide('slow');
+  $("#Start").slideToggle('slow');
 
   // playSound();
-  // play background story();
-  setTimeout(loadStage, 500);
+ 
+  setTimeout(stageSelect, 700);
 };
-////////////////////////////////
-// ### Creating Stages ####
-//////////////////////////////
 
-const loadStage = () => {
-  $(".battle").show("slow");
-  drawChar(charSet);
-  staging(charSet);
+///////////////////////////////////////
+// ### Creating Stages Functions ####
+/////////////////////////////////////
+
+const stageSelect=()=>{
+    checkStageUnlock()
+    $('#stageSelectId').slideToggle('slow')
+    
+};
+
+const loadStage1 = () => {
+    resetMap()
+   
+const $battlemap = $('<div>').addClass('battle').attr('id','battlemap')
+$battlemap.appendTo('#gameContainer')
+//$('#stageSelectId').slideToggle()
+$battlemap.slideToggle('slow')
+  drawChar(charSet1);
+  staging(charSet1);
   battleStart();
-  attackTarget()
+  attackTarget();
+  
 };
 
 
@@ -300,7 +274,7 @@ const drawChar = (obj) => {
     let $characterPic = obj[a].image;
     // console.log('$character', $characterPic)
     // console.log('$battlemap', $battlemap);
-    $characterPic.appendTo($battlemap);
+    $characterPic.appendTo('#battlemap');
       }
   }
 
@@ -315,48 +289,43 @@ console.log(spdArr)
 }
 
 
+const resolveWin = ()=>{
+if (win == 'hero'){
+    $('#gameSummaryId').attr('src','/pictures/Background/vic.gif')
+    $('#gameSummaryId').show()
+    setTimeout(()=>{$('#gameSummaryId').hide()},1000)
+    setTimeout(stageSelect, 3000)
+} else {
+    stageSelect()
+}
+}
 
 
 
+const resetMap = ()=>{
+   $('.allCharacters').remove();
+   $('.battle').remove()
+   $footer.hide();
+    heroList = [];
+ spdArr = [];
+ heroteam = 0;
+ villteam = 0;
+ index = 0;
+ atkselector = "";
+ turn = null
+
+}
 
 
 
-// const stageSetUp = (arr) => {
-//   for (const x in arr) {
-      
-//     if (arr[x].type === "villain") {
-//       villteam += arr[x].hp; console.log(villteam)
-//     } else {
-//       heroteam += arr[x].hp; console.log(heroteam)
-//     }
-//   }
-//   for (const y in arr){
-//       console.log('y >', y)
-//     if (arr[y].alive === true) {
-//         console.log('have alive')
-//         spdArr.push({ [arr[y].name]: arr[y].spd });
-//     spdArr.sort((a, b) => Object.values(b) - Object.values(a))
-//      console.log('spdArr ->' ,spdArr)
-//   }
-//   }
-//   if (villteam < 1) {
-//     alert("win");
-//   }
-//   if (heroteam < 1) {alert("lose")};
-//};
+//########################################
+//#####                               ####
+//#####       Main Battle Function    ####
+//#####                               ####
+//########################################
 
-// const reviewRound = (arr) => {
-//     for (const y in arr){
-//         console.log('y >', y)
-//       if (arr[y].alive === true) {
-//           console.log('have alive')
-//           spdArr.push({ [arr[y].name]: arr[y].spd });
-//       spdArr.sort((a, b) => Object.values(b) - Object.values(a))
-//        console.log('spdArr ->' ,spdArr)
-// };
-//     }}
 const battleStart = () => {
-   // console.log(spdArr[index].alive)
+   
   if(spdArr[index].alive==false) {
       if (index<spdArr.length-1) {
         index++;
@@ -365,81 +334,60 @@ const battleStart = () => {
             index = 0;
             battleStart()
         }}
-else if (spdArr[index].alive==true) {
+else if (spdArr[index].alive==true ) {
             if (spdArr[index].type=='hero') {
                 let x = spdArr[index].name;
                 $('.atkButton').remove()
                 atkselector=''
                 hero[x].sequence()//load footer, load button
-                
                 skillButtons()//open selection
                 turn = true
+
             } else {
                 $footer.hide()
-               // $footer.slideDown()
-              
+               
+              // generating random alive hero target
                 let aliveHero = []
                 spdArr.forEach((element,index2)=>{
-                    if(element.type=='hero'){
-                        aliveHero.push(index2)
-                    }
+                    if(element.type=='hero'){ aliveHero.push(index2)}    
                 })
+
                 let num = Math.floor(Math.random()*aliveHero.length)
                 let targetHero = spdArr[aliveHero[num]]
-                setTimeout(()=>{slash(targetHero)},2000)
-                if(index<spdArr.length-1){
+                let villName = spdArr[index].name
+                let randomAtk = Math.ceil(Math.random()*2)
+                if(randomAtk==1){
+                setTimeout(()=>{villain[villName].skill1(targetHero)},2000)
+                } else {
+                    setTimeout(()=>{villain[villName].skill2(targetHero)},2000)
+                }
+                let allHero = spdArr.filter(element=> element.type=='hero' && element.alive==true)
+                if (allHero.length<1){
+                    win='villain'
+                    alert ('you lost')
+                    resolveWin();
+                    resetMap();
+                   // location.reload();
+                }else if(index<spdArr.length-1){
                 index++
                 } else{
                     index = 0
                 }
+                if(allHero.length>0){
                 setTimeout(()=>{battleStart()},3000)
-              
+                }
             }
 }
-    
-//   const battleLoop=(charset)=>{
-//   let currChar = Object.keys(spdArr[arrIndex])[0];
-//   console.log(currChar);
-//   console.log(charSet);
-//   if(charSet[currChar]['type'] === 'hero'){
-//   hero[currChar].sequence()
-//   attackTarget()
-//   battleLoop(charSet)
-//   } else {
-//       generateHeroTarget()
-//       //charSet[currChar].skill
-//   }
-
 };
 
-const attackTarget =()=>{
-    for (const x in charSet) {
-        if (charSet[x].type == "villain") {
+const attackTarget =()=>{ // listener for villian to be clicked
+    for (const x in charSet1) {
+        if (charSet1[x].type == "villain") {
           $(`.${x}Class`).on("click", battle);
         } //select atk target
       }
 }
 
-const generateHeroTarget =()=>{
-    for (hero in charSet){
-        if (charSet[hero].type =='hero')
-        heroList.push(hero)
-        console.log(hero)
-    }
-}
-
-const battleLoop=(charset)=>{
-    let currChar = Object.keys(spdArr[arrIndex])[0];
-    console.log(currChar);
-    console.log(charSet);
-    if(charSet[currChar]['type'] === 'hero'){
-    hero[currChar].sequence()
-    attackTarget()
-    battleLoop(charSet)
-    } else {
-        generateHeroTarget()
-        //charSet[currChar].skill
-    }}
 
 
 //############################
@@ -456,6 +404,11 @@ const funcAtkSelector = (event) => {
   console.log(atkselector);
   return atkselector;
 };
+const checkStageUnlock =()=>{
+    if (stage1clear === true){
+        $('#stage2').removeClass('locked');
+    }
+}
 
 const playSound = () => {
   document.getElementById("StartTheme").play();
@@ -463,6 +416,8 @@ const playSound = () => {
 
 const main = () => {
   skillButtons();
+  $('#stage1').on('click', (()=>{stageSelect();setTimeout(loadStage1,700)}))
+  checkStageUnlock()
 };
 
 $(() => {
