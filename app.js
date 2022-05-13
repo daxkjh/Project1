@@ -44,10 +44,7 @@ const hero = {
       $beamButton.appendTo($footer);
       $missileButton.appendTo($footer);
     },
-    //   sequenceOut: ()=> {$beamButton.detach();
-    //                     $missileButton.detach();},
-
-    //   reset: ()=>{$('.ironmanClass').remove()}
+ 
   },
   thor: {
     type: "hero",
@@ -123,7 +120,7 @@ const villain = {
       targetHero.hp -= 50;
       $('.handslash').show();
       setTimeout(()=>($('.handslash').hide()),1000)
-      $('.ironmanbar').css('width',`${(targetHero.hp/charSet1.ironman.hpmax*100)}%`)
+      $('.ironmanbar').css('width',`${(targetHero.hp/targetHero.hpmax*100)}%`)
       if (targetHero.hp < 1) {
         targetHero.alive = false;
       }
@@ -133,6 +130,7 @@ const villain = {
     skill2: (targetHero) => {
       //console.log(targetHero)
       targetHero.hp -= 20;
+      $('.ironmanbar').css('width',`${(targetHero.hp/targetHero.hpmax*100)}%`)
       if (targetHero.hp < 1) {
         targetHero.alive = false;
       }
@@ -142,7 +140,7 @@ const villain = {
 };
 
 //#################################
-//###### skills #######
+//###### Hero skills #######
 //#############################
 
 const battle = (event) => {
@@ -157,8 +155,9 @@ const battle = (event) => {
       win = "hero";
       // alert ('win')
       resolveWin();
-      resetMap();
-      $(".atkButton").remove();
+     setTimeout(()=>{
+        resetMap();
+      $(".atkButton").remove();},2000)
       // return spdArr
     } else if (index < spdArr.length - 1) {
       index++;
@@ -175,9 +174,18 @@ const battle = (event) => {
 const attack = {
   beam: (event) => {
     let v = $(event.target).attr("name");
-
+    console.log('v =', v)
     let enemy = spdArr.find((element) => element.name == v);
     enemy.hp -= hero.ironman.atk;
+    setTimeout(()=>{ $('#ironmanId').addClass('ironmanbeamfinal')},500)
+    setTimeout(()=>{
+    $('<img>').addClass('beamgif').attr('src','/pictures/Characters/ironmanbeam.gif').appendTo($('#ironmanId'))
+    $(`.${v}bar`).css('width',`${(enemy.hp/enemy.hpmax*100)}%`)
+    } , 500)
+    setTimeout(()=>{
+        $('.beamgif').remove()
+        $('#ironmanId').removeClass('ironmanbeamfinal');
+    }, 1000)
     if (enemy.hp < 1) {
       enemy.alive = false;
     }
@@ -227,7 +235,7 @@ const stageSelect = () => {
 const loadStage1 = () => {
   console.log("loadStage1 working, charset1 is:", charSet1);
   console.log("loadStage1 working, ironman in hero is:", hero.ironman);
-  //  resetMap()
+    resetMap()
     currentStage = 1;
   const $battlemap = $("<div>").addClass("battle").attr("id", "battlemap");
   $battlemap.appendTo("#gameContainer");
@@ -282,17 +290,27 @@ const resolveWin = () => {
             $(`#stage${i+1}`).removeClass('locked')
         }}
 
-
     $("#gameSummaryId").attr("src", "/pictures/Background/vic.gif");
+    setTimeout(() => {
     $("#gameSummaryId").show();
+    resetMap();
+    }, 2000);
     setTimeout(() => {
       $("#gameSummaryId").hide();
-    }, 2000);
-    setTimeout(()=>{stageSelect();}, 3000);
-    //resetMap();
+    }, 4000);
+    setTimeout(()=>{stageSelect();}, 4000);
+    
    // console.log("console.log(spdArr)===>", spdArr);
   } else {
-    setTimeout(()=>{stageSelect();}, 3000);
+    $("#gameSummaryId").attr("src", "/pictures/Background/defeat.gif");
+    setTimeout(() => {
+    $("#gameSummaryId").show();
+    resetMap();
+    }, 2000);
+    setTimeout(() => {
+      $("#gameSummaryId").hide();
+    }, 4000);  
+    setTimeout(()=>{stageSelect();}, 4000);
    // console.log("console.log(spdArr)===>", spdArr);
   }
 };
@@ -308,6 +326,7 @@ const resetMap = () => {
   index = 0;
   atkselector = "";
   turn = null;
+  console.log('map reset!!')
  // win = ''
 };
 
@@ -321,9 +340,11 @@ const battleStart = () => {
   if (spdArr[index].alive == false) {
     if (index < spdArr.length - 1) {
       index++;
+      console.log('line 325')
       battleStart();
     } else {
       index = 0;
+      console.log('line 329')
       battleStart();
     }
   } else if (spdArr[index].alive == true) {
@@ -345,25 +366,26 @@ const battleStart = () => {
           aliveHero.push(index2);
         }
       });
-
       let num = Math.floor(Math.random() * aliveHero.length);
       let targetHero = spdArr[aliveHero[num]];
       let villName = spdArr[index].name;
       let randomAtk = Math.ceil(Math.random() * 2);
       if (randomAtk == 1) {
+          if(targetHero.alive == true){
         setTimeout(() => {
           villain[villName].skill1(targetHero);
         }, 2000);
         if (targetHero.hp < 1) {
           targetHero.alive = false;
-        }  
+        }}
       } else {
+          if(targetHero.alive == true){
         setTimeout(() => {
           villain[villName].skill2(targetHero);
         }, 2000);
         if (targetHero.hp < 1) {
           targetHero.alive = false;
-        }
+        }}
       }
       let allHero = spdArr.filter((element) => element.type == "hero");
       console.log('allhero=>',allHero)
@@ -375,25 +397,28 @@ const battleStart = () => {
         win = "villain";
        // alert("you lost");
         resolveWin();
-        resetMap();
+        //resetMap();
        
-      } else if (index < spdArr.length - 1) {
+      } else if (index < spdArr.length - 1 && allHeroDead==false) {
         index++;
+        console.log('line 380 working')
         setTimeout(() => {
           battleStart();
         }, 3000);
       } else {
+        if(allHeroDead==false){
+        console.log('line 386 working')
         index = 0;
         setTimeout(() => {
           battleStart();
-        }, 3000);
+        }, 3000);}
       }
     }
   }
 };
 
 const attackTarget = () => {
-  // listener for villian to be clicked
+  // listener for villain to be clicked
   for (const x in charSet1) {
     if (charSet1[x].type == "villain") {
       $(`.${x}Class`).on("click", battle);

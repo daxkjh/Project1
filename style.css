@@ -7,7 +7,7 @@ body {
 }
 
 div {
-  border-style: dashed;
+  border-style: none;
   border-width: 1px;
   border-color: aliceblue;
 }
@@ -36,6 +36,7 @@ div {
 
 #gameSummaryId{
   display: none;
+  z-index: 20;
 }
 
 #Start{
@@ -223,6 +224,17 @@ div {
     
  }
 
+ .ironmanbeammid{
+   background-image: url('/pictures/Characters/ironman/ironmanbeammid.png');
+ }
+
+.ironmanbeamfinal{
+width : 150px;
+  background-image: url('/pictures/Characters/ironman/ironmanbeamfinal.png');
+}
+
+
+
  .handClass {
   position: absolute;
   background-image: url("/pictures/Characters/TheHand/actual/HandSoldier.png");
@@ -232,7 +244,7 @@ div {
    background-size: cover;
   top: 330px;
   left: 720px;
-  align-self: flex-end;
+    align-self: flex-end;
     animation-duration: .75s;
     animation-iteration-count: infinite;
     margin: 0 auto 0 auto;
@@ -365,4 +377,8 @@ div {
   top: 330px;
   
 
+}
+
+.beamgif{
+  margin-left: 150px;
 }
