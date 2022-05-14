@@ -19,6 +19,7 @@ let stage2clear = false;
 let stage3clear = false;
 let stage4clear = false;
 
+
 //#####################
 // Game Hero Resource
 //#####################
@@ -221,8 +222,8 @@ const attack = {
     for (const x of spdArr) {
       if ( x.type == "villain") {
         x.hp -= 20;
-        if (enemy.hp < 1) {
-          enemy.alive = false;
+        if (x.hp < 1) {
+          x.alive = false;
         }
         $(`.${x.name}bar`).css('width',`${(x.hp/x.hpmax*100)}%`)
         console.log(x.hp);
@@ -358,6 +359,20 @@ const resetMap = () => {
   console.log('map reset!!')
  // win = ''
 };
+
+const gettingHit =()=>{
+  for(const char of spdArr){
+    let spriteToChange = char['name']
+    char['hp'].on('change',()=>{playHitSprite(spriteToChange)})
+  }
+}
+
+const playHitSprite =(name)=>{
+  let nameHit = `${name}Hit`
+  let $nameId = $(`#${name}Id`)
+$nameId.addClass(nameHit)
+setTimeout(()=>{$nameId.removeClass(nameHit)},100)
+}
 
 //########################################
 //#####                               ####
