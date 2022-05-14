@@ -209,27 +209,37 @@ div {
  .ironmanClass{
    position: absolute;
    background-image: url("/pictures/Characters/ironman/IronMan-sprite.png");
-   /* background-color: aquamarine; */
    height: 162px;
    width: 120px;
    background-size: cover;
    top: 330px;
    left: 100px;
    z-index: 10;
-    align-self: flex-end;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-    margin: 0 auto 0 auto;
-    transform-origin: bottom;
     
  }
 
- .ironmanbeammid{
-   background-image: url('/pictures/Characters/ironman/ironmanbeammid.png');
+ .ironmanbeaming {
+  animation-name: ironmanbeaming;
+  animation-timing-function: linear;
+  align-self: flex-end;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    margin: 0 auto 0 auto;
+    transform-origin: bottom;
+    z-index: 10;
+ }
+ @keyframes ironmanbeaming {
+   0% { background-image: url("/pictures/Characters/ironman/IronMan-sprite.png");}
+   25% { background-image: url('/pictures/Characters/ironman/ironmanbeammid.png');}
+   50% { background-image: url('/pictures/Characters/ironman/ironmanbeamfinal.png');}
+   75% { background-image: url('/pictures/Characters/ironman/ironmanbeammid.png');}
+   100% { background-image: url("/pictures/Characters/ironman/IronMan-sprite.png");}
  }
 
+
+
 .ironmanbeamfinal{
-width : 150px;
+width : 160px;
   background-image: url('/pictures/Characters/ironman/ironmanbeamfinal.png');
 }
 
@@ -242,14 +252,50 @@ width : 150px;
   height: 150px;
    width: 100px;
    background-size: cover;
-  top: 330px;
+  top: 310px;
   left: 720px;
-    align-self: flex-end;
+  transition: transform 5000ms
+    
+}
+
+.bounce-1 {
+  animation-name: bounce-1;
+  animation-timing-function: linear;
+  align-self: flex-end;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  margin: 0 auto 0 auto;
+  transform-origin: bottom;
+  
+
+}
+@keyframes bounce-1 {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+.bounce-2 {
+  animation-name: bounce-2;
+  animation-timing-function: linear;
+  align-self: flex-end;
     animation-duration: .75s;
     animation-iteration-count: infinite;
     margin: 0 auto 0 auto;
     transform-origin: bottom;
 }
+@keyframes bounce-2 {
+  0%   { transform: translateX(0); }
+  15%   { transform: translateX(-4px) translateY(-3px); }
+  25%   { transform: translateX(-7px) translateY(-7px); }
+  50%  { transform: translateX(-15px) translateY(0px); }
+  75%   { transform: translateX(-7px) translateY(-7px); }
+  85%  { transform: translateX(-3px) translateY(-4px); }
+  100% { transform: translateX(0); }
+}
+
+
+
 
 .footer {
   display: none;
@@ -345,40 +391,25 @@ width : 150px;
 }
 
 
-.bounce-1 {
-  animation-name: bounce-1;
-  animation-timing-function: linear;
-}
-@keyframes bounce-1 {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-20px); }
-  100% { transform: translateY(0); }
-}
 
-.bounce-2 {
-  animation-name: bounce-2;
-  animation-timing-function: linear;
-}
-@keyframes bounce-2 {
-  0%   { transform: translateX(0); }
-  15%   { transform: translateX(-4px) translateY(-3px); }
-  25%   { transform: translateX(-7px) translateY(-7px); }
-  50%  { transform: translateX(-15px) translateY(0px); }
-  75%   { transform: translateX(-7px) translateY(-7px); }
-  85%  { transform: translateX(-3px) translateY(-4px); }
-  100% { transform: translateX(0); }
-}
-.handslash{
-  display: none;
+.handslash {
   z-index: 15;
-  position: absolute;
+  margin-top : -100px;
+  margin-left : -75px;
   height: 300px;
-  left: 350px;
-  top: 330px;
+  
   
 
 }
 
-.beamgif{
-  margin-left: 150px;
+.handCut{
+  position: relative;
+  z-index: 15;
+  margin-left: -300px;
 }
+
+.beamgif{
+  margin-left: 160px;
+  margin-top: -40px;
+}
+

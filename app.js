@@ -118,22 +118,45 @@ const villain = {
     skill1: (targetHero) => {
       //console.log(targetHero)
       targetHero.hp -= 50;
-      $('.handslash').show();
-      setTimeout(()=>($('.handslash').hide()),1000)
-      $('.ironmanbar').css('width',`${(targetHero.hp/targetHero.hpmax*100)}%`)
       if (targetHero.hp < 1) {
         targetHero.alive = false;
       }
+      //css portion
+      const $handslash = $('<img>').addClass("handslash").attr('src',"/pictures/Characters/TheHand/actual/hand1.gif")
+      $('.handClass').slideToggle()
+      setTimeout(()=>{$handslash.appendTo($('#ironmanId'))
+      console.log(targetHero.name)
+    },600)
+    setTimeout(()=>{
+      $(`.${targetHero.name}bar`).css('width',`${(targetHero.hp/targetHero.hpmax*100)}%`)
+    },1000)
+      setTimeout(()=>{
+       $('.handslash').remove()
+      $('.handClass').slideToggle('slow')
+        
+    },1600)
+      
       console.log("hand Atk1! targetHerohp:", targetHero.hp);
     },
 
     skill2: (targetHero) => {
-      //console.log(targetHero)
+      
       targetHero.hp -= 20;
-      $('.ironmanbar').css('width',`${(targetHero.hp/targetHero.hpmax*100)}%`)
       if (targetHero.hp < 1) {
         targetHero.alive = false;
       }
+      //css portion
+      $('.handClass').removeClass('bounce-2')
+      $('.handClass').css({"transform":"translateX(-500px)"})
+      const $hand2 = $('<img>').addClass('handCut').attr('src','/pictures/Characters/TheHand/actual/hand2.gif')
+      $hand2.appendTo($('#handId'))
+      setTimeout(()=>{
+        $hand2.remove()
+        $('.handClass').css("transform","translateX(500px)")
+        $('.handClass').addClass('bounce-2')
+      }, 1000)
+      $(`.${targetHero.name}bar`).css('width',`${(targetHero.hp/targetHero.hpmax*100)}%`)
+     
       console.log("hand Atk2! targetHerohp:", targetHero.hp);
     },
   },
@@ -177,6 +200,8 @@ const attack = {
     console.log('v =', v)
     let enemy = spdArr.find((element) => element.name == v);
     enemy.hp -= hero.ironman.atk;
+
+    //css portion
     setTimeout(()=>{ $('#ironmanId').addClass('ironmanbeamfinal')},500)
     setTimeout(()=>{
     $('<img>').addClass('beamgif').attr('src','/pictures/Characters/ironmanbeam.gif').appendTo($('#ironmanId'))
@@ -184,7 +209,7 @@ const attack = {
     } , 500)
     setTimeout(()=>{
         $('.beamgif').remove()
-        $('#ironmanId').removeClass('ironmanbeamfinal');
+       $('#ironmanId').removeClass('ironmanbeamfinal');
     }, 1000)
     if (enemy.hp < 1) {
       enemy.alive = false;
@@ -193,10 +218,14 @@ const attack = {
   },
 
   missile: () => {
-    for (const x in charSet1) {
-      if (charSet1[x].type == "villain") {
-        charSet1[x].hp -= 1;
-        console.log(charSet1[x]);
+    for (const x of spdArr) {
+      if ( x.type == "villain") {
+        x.hp -= 20;
+        if (enemy.hp < 1) {
+          enemy.alive = false;
+        }
+        $(`.${x.name}bar`).css('width',`${(x.hp/x.hpmax*100)}%`)
+        console.log(x.hp);
       }
     }
   },
@@ -233,8 +262,8 @@ const stageSelect = () => {
 };
 
 const loadStage1 = () => {
-  console.log("loadStage1 working, charset1 is:", charSet1);
-  console.log("loadStage1 working, ironman in hero is:", hero.ironman);
+  // console.log("loadStage1 working, charset1 is:", charSet1);
+  // console.log("loadStage1 working, ironman in hero is:", hero.ironman);
     resetMap()
     currentStage = 1;
   const $battlemap = $("<div>").addClass("battle").attr("id", "battlemap");
