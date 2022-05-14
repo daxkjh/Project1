@@ -119,17 +119,19 @@ const villain = {
     skill1: (targetHero) => {
       //console.log(targetHero)
       targetHero.hp -= 50;
+     // gettingHit()
       if (targetHero.hp < 1) {
         targetHero.alive = false;
       }
       //css portion
       const $handslash = $('<img>').addClass("handslash").attr('src',"/pictures/Characters/TheHand/actual/hand1.gif")
       $('.handClass').slideToggle()
-      setTimeout(()=>{$handslash.appendTo($('#ironmanId'))
+      setTimeout(()=>{$handslash.appendTo($(`#${targetHero.name}Id`))
       console.log(targetHero.name)
     },600)
     setTimeout(()=>{
       $(`.${targetHero.name}bar`).css('width',`${(targetHero.hp/targetHero.hpmax*100)}%`)
+      playHitSprite(targetHero.name)
     },1000)
       setTimeout(()=>{
        $('.handslash').remove()
@@ -143,6 +145,7 @@ const villain = {
     skill2: (targetHero) => {
       
       targetHero.hp -= 20;
+      //gettingHit()
       if (targetHero.hp < 1) {
         targetHero.alive = false;
       }
@@ -151,11 +154,12 @@ const villain = {
       $('.handClass').css({"transform":"translateX(-500px)"})
       const $hand2 = $('<img>').addClass('handCut').attr('src','/pictures/Characters/TheHand/actual/hand2.gif')
       $hand2.appendTo($('#handId'))
+      playHitSprite(targetHero.name)
       setTimeout(()=>{
         $hand2.remove()
         $('.handClass').css("transform","translateX(500px)")
         $('.handClass').addClass('bounce-2')
-      }, 1000)
+      }, 800)
       $(`.${targetHero.name}bar`).css('width',`${(targetHero.hp/targetHero.hpmax*100)}%`)
      
       console.log("hand Atk2! targetHerohp:", targetHero.hp);
@@ -198,13 +202,14 @@ const battle = (event) => {
 const attack = {
   beam: (event) => {
     let v = $(event.target).attr("name");
-    console.log('v =', v)
+    //console.log('v =', v)
     let enemy = spdArr.find((element) => element.name == v);
     enemy.hp -= hero.ironman.atk;
 
     //css portion
     setTimeout(()=>{ $('#ironmanId').addClass('ironmanbeamfinal')},500)
     setTimeout(()=>{
+      playHitSprite(v)
     $('<img>').addClass('beamgif').attr('src','/pictures/Characters/ironmanbeam.gif').appendTo($('#ironmanId'))
     $(`.${v}bar`).css('width',`${(enemy.hp/enemy.hpmax*100)}%`)
     } , 500)
@@ -222,10 +227,14 @@ const attack = {
     for (const x of spdArr) {
       if ( x.type == "villain") {
         x.hp -= 20;
+        let v = x.name;
+        setTimeout(()=>{
+          $(`.${x.name}bar`).css('width',`${(x.hp/x.hpmax*100)}%`)
+          playHitSprite(v)
+        } , 500)
         if (x.hp < 1) {
           x.alive = false;
         }
-        $(`.${x.name}bar`).css('width',`${(x.hp/x.hpmax*100)}%`)
         console.log(x.hp);
       }
     }
@@ -243,6 +252,16 @@ const $missileButton = $("<button>")
   .addClass("atkButton")
   .attr("id", "missileButtonId")
   .attr("name", "missile");
+const $hammer = $("<button>")
+.addClass("hammerButtonClass")
+.addClass("atkButton")
+.attr("id", "hammerButtonId")
+.attr("name", "hammer");
+const $thunder = $("<button>")
+.addClass("thunderButtonClass")
+.addClass("atkButton")
+.attr("id", "thunderButtonId")
+.attr("name", "thunder");
 
 //######### GAME START ###################
 const gameStart = () => {
@@ -367,12 +386,14 @@ const gettingHit =()=>{
   }
 }
 
-const playHitSprite =(name)=>{
+const playHitSprite =(name, times = 1, duration = 500)=>{
+  for(let i = 0; i< times; i++){
+  console.log('playHitSprite is working,  v is' , name)
   let nameHit = `${name}Hit`
   let $nameId = $(`#${name}Id`)
 $nameId.addClass(nameHit)
-setTimeout(()=>{$nameId.removeClass(nameHit)},100)
-}
+setTimeout(()=>{$nameId.removeClass(nameHit)},duration)
+}}
 
 //########################################
 //#####                               ####
@@ -477,6 +498,7 @@ const attackTarget = () => {
 const skillButtons = () => {
   $beamButton.on("click", funcAtkSelector);
   $missileButton.on("click", funcAtkSelector);
+
 };
 
 const funcAtkSelector = (event) => {
@@ -506,4 +528,5 @@ const main = () => {
 $(() => {
   main();
   $("#startbutton").on("click", gameStart);
+  
 });

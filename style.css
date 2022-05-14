@@ -215,8 +215,13 @@ div {
    top: 330px;
    left: 100px;
    z-index: 10;
-    
  }
+
+.ironmanHit{
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/ironman/ironmanHit.png');
+}
 
  .ironmanbeaming {
   animation-name: ironmanbeaming;
@@ -253,10 +258,15 @@ width : 160px;
    width: 100px;
    background-size: cover;
   top: 310px;
-  left: 720px;
-  transition: transform 5000ms
-    
+  left: 720px;  
 }
+
+.handHit {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/TheHand/actual/handHit.png');
+}
+
 
 .bounce-1 {
   animation-name: bounce-1;
@@ -317,14 +327,16 @@ width : 160px;
 
 #beamButtonId{
   background-image: url('/pictures/Characters/ironman/beambutton.png');
-  width: 50px;
-  height: 50px;
+  background-size: cover;
+  width: 75px;
+  height: 75px;
 }
 
 #missileButtonId{
   background-image: url('/pictures/Characters/ironman/missilebutton.png');
-  width: 50px;
-  height: 50px;
+  background-size: cover;
+  width: 75px;
+  height: 75px;
 }
 
 .selected {
