@@ -301,13 +301,30 @@ const loadStage1 = () => {
 // GAME FUNCTIONS
 //####################
 
-const drawChar = (obj) => {
+const drawChar = (obj) => {  // loading characters onto the map
   for (const a in obj) {
+    console.log(obj[a])
+    let x = 1
+    let y = 1
     let $characterPic = obj[a].image;
-     $characterPic.appendTo("#battlemap");
+    if(obj[a].type == 'hero'){
+      console.log (obj[a].type)
+      let pos = `H${x}`
+      let $Hpos = $('<div>').addClass(pos)
+      $Hpos.appendTo($('#battlemap'))
+      $characterPic.appendTo($Hpos);
+      $('<div>').addClass('allCharacters').addClass(`${obj[a].name}HB`).appendTo($characterPic);
+      $('<div>').addClass('allCharacters').addClass(`${obj[a].name}bar`).appendTo(`.${obj[a].name}HB`);
+      x++
+    } 
+    else {
+      let pos = `V${y}`
+      let $Vpos = $('<div>').addClass(pos)
+      $Vpos.appendTo($('#battlemap'))
+      $characterPic.appendTo($Vpos);
         $('<div>').addClass('allCharacters').addClass(`${obj[a].name}HB`).appendTo($characterPic);
         $('<div>').addClass('allCharacters').addClass(`${obj[a].name}bar`).appendTo(`.${obj[a].name}HB`);
-        
+    } 
 
 
 
@@ -315,18 +332,15 @@ const drawChar = (obj) => {
   }
 };
 
-const staging = (obj) => {
-  // for (const item in obj){
-  // spdArr.push(obj[item])
-  // }
-  spdArrPrototype = Object.values(charSet1);
+const staging = (obj) => { // to set up the battle field values 
+  spdArrPrototype = Object.values(charSet1); // cloning the object so battle wont change the main object values
   spdArr = spdArrPrototype.map((x) => {
     const copiedObject = Object.assign({}, x);
     copiedObject.approved = true;
     return copiedObject;
   });
 
-  spdArr.sort((a, b) => {
+  spdArr.sort((a, b) => { // setting the array such that faster character goes first
     return b.spd - a.spd;
   });
   console.log("staging running:", spdArr);
