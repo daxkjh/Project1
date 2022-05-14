@@ -35,28 +35,46 @@ const hero = {
     atk: 20, 
     atkgrowth: 12,
     hpgrowth: 15,
-    pic: $("<div>")
+    alive: true,
+    image: $("<div>")
       .attr("id", "ironmanId")
       .addClass("ironmanClass")
       .addClass("bounce-1")
       .addClass("allCharacters"),
     sequence: () => {
+      console.log('Ironman Sequence');
       $footer.show();
       $beamButton.appendTo($footer);
       $missileButton.appendTo($footer);
+      turn = true;
+      return turn;
     },
- 
   },
   thor: {
     type: "hero",
     name: "thor",
     level: 1,
-    spd: 9,
-    hp: 140,
-    atk: 15,
-    atkgrowth: 8,
-    hpgrowth: 25,
-  },
+    spd: 10,
+    hp: 100,
+    hpmax:100,
+    atk: 20, 
+    atkgrowth: 12,
+    hpgrowth: 15,
+    alive: true,
+    image: $("<div>")
+      .attr("id", "thorId")
+      .addClass("thorClass")
+      .addClass("bounce-2")
+      .addClass("allCharacters"),
+    sequence: () => {
+      console.log('Thor Sequence')
+      $footer.show();
+      $hammerButton.appendTo($footer);
+      $thunderButton.appendTo($footer);
+      turn = true;
+      return turn;
+  }
+},
   hulk: {
     type: "hero",
     name: "hulk",
@@ -68,6 +86,31 @@ const hero = {
     hpgrowth: 35,
   },
 };
+
+//###################
+// ##    Villain list
+//###################
+
+hand = {
+  name: "hand",
+  type: "villain",
+  hp: 100,
+  hpmax:100,
+  atk: 15,
+  spd: 5,
+  alive: true,
+  image: $("<div>")
+    .addClass("handClass")
+    .addClass('bounce-2')
+    .addClass("allCharacters")
+    .attr("id", "handId")
+    .attr("name", "hand")
+}
+
+
+
+
+
 
 //###############
 /// LEVEL UP
@@ -81,35 +124,39 @@ for (const char in hero) {
 //############################
 //     Stage Character Load
 //###########################
-let hero1 = "ironman"; // from function
+//let hero1 = "ironman"; // from function
 
-const charSet1 = {
-  hand: {
-    name: "hand",
-    type: "villain",
-    hp: 100,
-    hpmax:100,
-    atk: 15,
-    spd: 5,
-    alive: true,
-    image: $("<div>")
-      .addClass("handClass")
-      .addClass('bounce-2')
-      .addClass("allCharacters")
-      .attr("id", "handId")
-      .attr("name", "hand"),
-  },
-  ironman: {
-    name: hero[hero1].name,
-    type: hero[hero1].type,
-    hp: hero[hero1].hp,
-    hpmax:hero[hero1].hp,
-    atk: hero[hero1].atk,
-    spd: hero[hero1].spd,
-    alive: true,
-    image: hero[hero1].pic,
-  },
-};
+const charSet1 = {}
+  // hand: {
+  //   name: "hand",
+  //   type: "villain",
+  //   hp: 100,
+  //   hpmax:100,
+  //   atk: 15,
+  //   spd: 5,
+  //   alive: true,
+  //   image: $("<div>")
+  //     .addClass("handClass")
+  //     .addClass('bounce-2')
+  //     .addClass("allCharacters")
+  //     .attr("id", "handId")
+  //     .attr("name", "hand"),
+  // },
+//   ironman: {
+//     name: hero[hero1].name,
+//     type: hero[hero1].type,
+//     hp: hero[hero1].hp,
+//     hpmax:hero[hero1].hp,
+//     atk: hero[hero1].atk,
+//     spd: hero[hero1].spd,
+//     alive: true,
+//     image: hero[hero1].pic,
+//   },
+// };
+
+charSet1.hand = hand;
+charSet1.ironman = hero.ironman
+charSet1.thor = hero.thor
 
 ////////////////////////////////////////////
 ///#### Villain skills
@@ -151,15 +198,26 @@ const villain = {
       }
       //css portion
       $('.handClass').removeClass('bounce-2')
-      $('.handClass').css({"transform":"translateX(-500px)"})
-      const $hand2 = $('<img>').addClass('handCut').attr('src','/pictures/Characters/TheHand/actual/hand2.gif')
+      $(".handClass").animate({
+        'left':'-350px'
+    },200, 'linear',)
+      //$('.handClass').css({"transform":"translateX(-500px)"})
+      // $('.handClass').animate({
+      // backgroundPositionX: "-=100px", 
+      // backgroundPositionY: "-=200px"
+      // });
+      setTimeout(()=>{const $hand2 = $('<img>').addClass('handCut').attr('src','/pictures/Characters/TheHand/actual/hand2.gif')
       $hand2.appendTo($('#handId'))
-      playHitSprite(targetHero.name)
+      playHitSprite(targetHero.name)},250)
       setTimeout(()=>{
-        $hand2.remove()
-        $('.handClass').css("transform","translateX(500px)")
-        $('.handClass').addClass('bounce-2')
-      }, 800)
+        $('.handCut').remove();
+       $(".handClass").animate({
+          'left':'0px'
+            },200, 'linear');
+       // $('.handClass').css("transform","translateX(500px)")
+        $('.handClass').addClass('bounce-2');
+      }, 1050)
+     
       $(`.${targetHero.name}bar`).css('width',`${(targetHero.hp/targetHero.hpmax*100)}%`)
      
       console.log("hand Atk2! targetHerohp:", targetHero.hp);
@@ -174,9 +232,14 @@ const villain = {
 const battle = (event) => {
   //   console.log("atkselector", atkselector)
   if (turn == true) {
+  //  turn = false;
+    console.log('line 236, turn =', turn)
     let execute = attack[atkselector];
     execute(event);
+    atkselector='';
+    console.log('line 237 -- battle()')
     $(".atkButton").remove();
+    $footer.hide(); 
     let allVill = spdArr.filter((element) => element.type == "villain");
     let allVillDead = allVill.every((element) => element.alive == false);
     if (allVillDead == true) {
@@ -190,17 +253,18 @@ const battle = (event) => {
     } else if (index < spdArr.length - 1) {
       index++;
       battleStart();
+      return
     } else {
       index = 0;
       battleStart();
+      return
     }
-
-    turn = false;
   }
 };
 
 const attack = {
   beam: (event) => {
+    turn = false;
     let v = $(event.target).attr("name");
     //console.log('v =', v)
     let enemy = spdArr.find((element) => element.name == v);
@@ -224,6 +288,7 @@ const attack = {
   },
 
   missile: () => {
+    turn = false;
     for (const x of spdArr) {
       if ( x.type == "villain") {
         x.hp -= 20;
@@ -239,6 +304,25 @@ const attack = {
       }
     }
   },
+
+  hammer: (event)=>{
+    turn=false;
+  let v = $(event.target).attr("name");
+  //console.log('v =', v)
+  let enemy = spdArr.find((element) => element.name == v);
+  enemy.hp -= hero.ironman.atk;
+  if (enemy.hp < 1) {
+    enemy.alive = false;
+  }
+
+  // css
+  console.log(enemy.hp);
+},
+
+
+
+
+
 };
 
 //## Skill Buttons
@@ -252,12 +336,12 @@ const $missileButton = $("<button>")
   .addClass("atkButton")
   .attr("id", "missileButtonId")
   .attr("name", "missile");
-const $hammer = $("<button>")
+const $hammerButton = $("<button>")
 .addClass("hammerButtonClass")
 .addClass("atkButton")
 .attr("id", "hammerButtonId")
 .attr("name", "hammer");
-const $thunder = $("<button>")
+const $thunderButton = $("<button>")
 .addClass("thunderButtonClass")
 .addClass("atkButton")
 .attr("id", "thunderButtonId")
@@ -302,20 +386,23 @@ const loadStage1 = () => {
 //####################
 
 const drawChar = (obj) => {  // loading characters onto the map
-  for (const a in obj) {
-    console.log(obj[a])
-    let x = 1
+  let x = 1
     let y = 1
+  for (const a in obj) {
+    //console.log(obj[a])
     let $characterPic = obj[a].image;
     if(obj[a].type == 'hero'){
-      console.log (obj[a].type)
+     // console.log (obj[a].type)
       let pos = `H${x}`
       let $Hpos = $('<div>').addClass(pos)
       $Hpos.appendTo($('#battlemap'))
       $characterPic.appendTo($Hpos);
+      console.log('create hp bar')
       $('<div>').addClass('allCharacters').addClass(`${obj[a].name}HB`).appendTo($characterPic);
       $('<div>').addClass('allCharacters').addClass(`${obj[a].name}bar`).appendTo(`.${obj[a].name}HB`);
-      x++
+      console.log("x =",x);
+      x++;
+      
     } 
     else {
       let pos = `V${y}`
@@ -324,6 +411,9 @@ const drawChar = (obj) => {  // loading characters onto the map
       $characterPic.appendTo($Vpos);
         $('<div>').addClass('allCharacters').addClass(`${obj[a].name}HB`).appendTo($characterPic);
         $('<div>').addClass('allCharacters').addClass(`${obj[a].name}bar`).appendTo(`.${obj[a].name}HB`);
+        console.log("y =", y);
+        y++;
+        
     } 
 
 
@@ -416,6 +506,7 @@ setTimeout(()=>{$nameId.removeClass(nameHit)},duration)
 //########################################
 
 const battleStart = () => {
+  $(".atkButton").remove();
   if (spdArr[index].alive == false) {
     if (index < spdArr.length - 1) {
       index++;
@@ -429,11 +520,10 @@ const battleStart = () => {
   } else if (spdArr[index].alive == true) {
     if (spdArr[index].type == "hero") {
       let x = spdArr[index].name;
-      $(".atkButton").remove();
-      // atkselector=''
+      console.log(index)
       hero[x].sequence(); //load footer, load button
       skillButtons(); //load selection function >>> wait for user click
-      turn = true; //allow user to click
+   // return turn = true; //allow user to click
     } else {
       //if alive character is not human
       $footer.hide(); //computers turn
@@ -512,12 +602,16 @@ const attackTarget = () => {
 const skillButtons = () => {
   $beamButton.on("click", funcAtkSelector);
   $missileButton.on("click", funcAtkSelector);
+  $hammerButton.on("click", funcAtkSelector);
+  $thunderButton.on("click", funcAtkSelector);
+
 
 };
 
 const funcAtkSelector = (event) => {
   atkselector = $(event.target).attr("name");
   console.log(atkselector);
+  console.log(turn);
   return atkselector;
 };
 const checkStageUnlock = () => {
@@ -531,7 +625,7 @@ const playSound = () => {
 };
 
 const main = () => {
-  skillButtons();
+ // skillButtons();
   $("#stage1").on("click", () => {
     stageSelect();
     setTimeout(loadStage1, 700);
