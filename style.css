@@ -12,12 +12,33 @@ div {
   border-color: aliceblue;
 }
 
+.welcome{
+  background-image: url("/pictures/Background/PG.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: #35383a;
+  background-position: center;
+  opacity: 0.9;
+  position: absolute;
+  width: 920px;
+  height: 720px;
+}
+
+.welcomeButton{
+  position: absolute;
+  left: 300px;
+  bottom: 10px;
+  padding: 10px;
+}
+
+
+
 .H1 {
   
   position: absolute;
   max-width: 200px;
   max-height: 200px;
-  top: 150px;
+  top: 120px;
   left: 150px;
 
 }
@@ -25,15 +46,15 @@ div {
   position: absolute;
   max-width: 200px;
   max-height: 200px;
-  top: 300px;
-  left: 150px;
+  top: 250px;
+  left: 125px;
 }
 .H3 {
   position: absolute;
   max-width: 200px;
   max-height: 200px;
-  top: 450px;
-  left: 150px;
+  top: 380px;
+  left: 100px;
 }
 
 .V1 {
@@ -41,22 +62,22 @@ div {
   position: absolute;
   max-width: 200px;
   max-height: 200px;
-  top: 150px;
-  right: 250px;
+  top: 120px;
+  left: 650px;
 }
 .V2 {
   position: absolute;
   max-width: 200px;
   max-height: 200px;
-  top: 300px;
-  right: 250px;
+  top: 250px;
+  left: 675px;
 }
 .V3 {
   position: absolute;
   max-width: 200px;
   max-height: 200px;
-  top: 450px;
-  right: 250px;
+  top: 380px;
+  left: 700px;
 }
 
 
@@ -262,13 +283,18 @@ div {
    margin-top: 30px;
 }
 
+.atkButton {
+  position: relative;
+  left: 50%;
+  margin: 10px;
+}
+
  .ironmanClass{
    position: absolute;
    background-image: url("/pictures/Characters/ironman/IronMan-sprite.png");
    height: 162px;
    width: 120px;
    background-size: cover;
-
    z-index: 10;
  }
 
@@ -305,20 +331,105 @@ width : 160px;
   background-image: url('/pictures/Characters/ironman/ironmanbeamfinal.png');
 }
 
+.missile1 {
+  height: 162px;
+  width: 120px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/ironman/ironmanmissile1.png');
+}
+
+.missile2 {
+  height: 162px;
+  width: 150px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/ironman/ironmanmissile2.png');
+}
+
+.missilegif{
+  content: url("/pictures/Characters/ironman/missilelaunch.gif");
+  position: absolute;
+  width: 80px;
+  height: 300px;
+  top: -290px;
+  z-index: 10;
+}
+
+.missileHit{
+  content: url('/pictures/Characters/ironman/missileHit.gif');
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 200px;
+  bottom: -10px;
+  left: -30px;
+}
+
+.missileHit1{
+  content: url('/pictures/Characters/ironman/missileHit.gif');
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 200px;
+  bottom: -20px;
+  left: -80px;
+}
+
 .thorClass{
   position: absolute;
   background-image: url("/pictures/Characters/Thor/thor-sprite.png");
   background-repeat: no-repeat;
   height: 162px;
   width: 120px;
-  background-size: cover;
-
+  background-size: contain;
   z-index: 10;
 }
+.thorHit{
+  height: 162px;
+  width: 150px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/Thor/thorHit.png');
+}
 
+.thorThunder{
+  height: 162px;
+  width: 120px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/Thor/thor-lightning.png');
+}
 
+.thorHammer{
+  height: 162px;
+  width: 150px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/Thor/thor-strike.png');
+}
 
+.thunderShootUp {
+  position: absolute;
+  top: -280px;
+  left: 30px;
+  width: 80px;
+  height: 300px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/Thor/thundershootup.gif');
+}
 
+.thunderStruck{
+  position: absolute;
+  top: -80px;
+  left: 10px;
+  width: 150px;
+  height: 250px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/Thor/lightning.gif');
+}
 
  .handClass {
   position: absolute;
@@ -327,7 +438,7 @@ width : 160px;
   height: 150px;
    width: 100px;
    background-size: cover;
-   z-index: 2;
+   z-index: 9;
  
 }
 
@@ -374,6 +485,34 @@ width : 160px;
   100% { transform: translateX(0); }
 }
 
+.goonClass {
+  position: absolute;
+  background-image: url("/pictures/Characters/Goons/actual/goon-sprite.png");
+  /* background-color: aquamarine; */
+  height: 150px;
+   width: 120px;
+   background-size: contain;
+   background-repeat: no-repeat;
+   z-index: 9;
+}
+
+.goonHit {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/Goons/actual/goonHit.png');
+}
+
+.goonShooting {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/Goons/actual/goonshooting.png');
+}
+.goonRecoil {
+  height: 170;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('/pictures/Characters/Goons/actual/shootRecoil.png');
+}
 
 
 
@@ -498,6 +637,29 @@ width : 160px;
   transition: width .5s linear;
 }
 
+.goonHB {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100px;
+  height: 18px;
+  padding: 2px;
+  background: #ddd;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: -25px;
+}
+.goonbar {
+  background: #c54;
+  width: 100%;
+  height: 10px;
+  position: relative;
+  
+  transition: width .5s linear;
+}
+
 .hit {
   background: rgba(255,255,255,0.6);
   position: absolute;
@@ -509,7 +671,9 @@ width : 160px;
   transition: width .5s linear;
 }
 
-
+.dead {
+  display: none;
+}
 
 .handslash {
   z-index: 15;
@@ -529,6 +693,48 @@ width : 160px;
 
 .beamgif{
   margin-left: 160px;
-  margin-top: -40px;
+  margin-top: -10px;
+  width: 450px;
 }
 
+.hammergif {
+  position: absolute;
+  margin-left: 0px;
+  width: 500px;
+  top: -180px;
+  left: 0px;
+  animation-name: hammergif;
+  animation-duration: 2s;
+}
+
+@keyframes hammergif {
+  0% {transform: translateX(-70px) translateY(-140px);}
+  /* 10% {transform: translateX(0px) translateY(-135px);}
+  20% {transform: translateX(0px) translateY(-120px);}
+  30% {transform: translateX(0px) translateY(-105px);}
+  40% {transform: translateX(0px) translateY(-90px);}
+  50% {transform: translateX(0px) translateY(-75px);}
+  60% { transform: translateX(0px) translateY(-60px); }
+  70% {transform: translateX(0px) translateY(-45px);}
+  80% { transform: translateX(0px) translateY(-30px); } */
+  95% {transform: translateX(-70px) translateY(-140px);}
+  100% { transform: translateX(0px) translateY(0px); }
+}
+
+.ironmanHead{
+  position: absolute;
+  left:0px;
+  bottom:0px;
+  width: auto;
+  height: 200px;
+  margin: 0px;
+}
+
+.thorHead{
+  position: absolute;
+  left:0px;
+  bottom:0px;
+  width: auto;
+  height: 200px;
+  margin: 0px;
+}
