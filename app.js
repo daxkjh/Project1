@@ -645,12 +645,6 @@ const resetMap = () => {
  // win = ''
 };
 
-// const gettingHit =()=>{
-//   for(const char of spdArr){
-//     let spriteToChange = char['name']
-//     char['hp'].on('change',()=>{playHitSprite(spriteToChange)})
-//   }
-// }
 
 const playHitSprite =(name, times = 1, duration = 500)=>{
   for(let i = 0; i< times; i++){

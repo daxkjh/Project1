@@ -6,11 +6,6 @@ body {
   min-width: 920px;
 }
 
-div {
-  border-style: dashed;
-  border-width: 1px;
-  border-color: aliceblue;
-}
 
 .welcome{
   background-image: url("/pictures/Background/PG.jpg");
